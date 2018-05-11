@@ -76,8 +76,9 @@ class GameViewController: UIViewController {
     
     func handleSwitch(_ swap: Swap) {
         if !paused {
-            level.performSwap(swap)
-            scene.animateSwitch()
+//            level.performSwap(swap)
+//            scene.animateSwitch()
+            scene.animateSwitch(swap)
         }
     }
     
@@ -102,6 +103,11 @@ class GameViewController: UIViewController {
     func deleteBlocks() {
         if let toDelete = level.findMatches() {
             scene.removeSprites(for: toDelete)
+            for block in toDelete {
+                block.sprite?.removeFromParent()
+//                level.set.remove(block)
+            }
+            level.set = level.set.filter { !$0.delete }
         }
     }
     

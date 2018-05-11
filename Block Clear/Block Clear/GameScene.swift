@@ -120,6 +120,36 @@ class GameScene: SKScene {
         selectedBlock = nil
     }
     
+    func animateSwitch(_ swap: Swap) {
+        selectedBlock?.sprite?.glowWidth = 0
+        selectedBlock = nil
+        
+        swap.blockA.isFalling = true
+        var columnForA: Int?
+        
+        if let toColumnForA = swap.blockB?.column {
+            columnForA = toColumnForA
+            swap.blockB!.isFalling = true
+            let colForB = swap.blockA.column
+            let destForB = pointFor(yPos: Float(swap.blockB!.row) + level.deltaY, column: colForB)
+            swap.blockB!.sprite?.run(SKAction.move(to: destForB!, duration: 0.1), completion: {
+                swap.blockB!.column = colForB
+                swap.blockB!.isFalling = false
+            })
+            
+            
+        } else if let toColumnForA = swap.toColumn {
+            columnForA = toColumnForA
+        }
+        
+        let destForA = pointFor(yPos: Float(swap.blockA.row) + level.deltaY, column: columnForA!)
+
+        swap.blockA.sprite?.run(SKAction.move(to: destForA!, duration: 0.3), completion: {
+            swap.blockA.column = columnForA!
+            swap.blockA.isFalling = false
+        })
+    }
+    
     func animateFalls(falls: [Fall]){
         for fall in falls {
             let realDest = pointFor(yPos: Float(fall.toRow) + level.deltaY, column: fall.block.column)
