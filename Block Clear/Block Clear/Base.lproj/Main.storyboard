@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BV1-FR-VrT">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Game View Controller-->
+        <scene sceneID="tXr-a1-R10">
+            <objects>
+                <viewController id="BV1-FR-VrT" customClass="GameViewController" customModule="Block_Clear" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="3se-qz-xqx" customClass="SKView">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fij-cB-fkM" colorLabel="IBBuiltInLabel-Yellow">
+                                <rect key="frame" x="141" y="30" width="94" height="48"/>
+                                <color key="backgroundColor" red="0.86274509799999999" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                <nil key="highlightedColor"/>
+                                <size key="shadowOffset" width="1" height="1"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ujk-au-ZUf">
+                                <rect key="frame" x="251" y="36" width="94" height="36"/>
+                                <state key="normal" title="Pause" backgroundImage="Tile.png"/>
+                                <connections>
+                                    <action selector="pauseButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="0Dr-kG-F0H"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="ujk-au-ZUf" firstAttribute="width" secondItem="fij-cB-fkM" secondAttribute="width" id="9cm-w3-4aR"/>
+                            <constraint firstItem="fij-cB-fkM" firstAttribute="centerX" secondItem="4qk-I5-YsI" secondAttribute="centerX" id="CSI-1Z-RIp"/>
+                            <constraint firstItem="ujk-au-ZUf" firstAttribute="centerY" secondItem="fij-cB-fkM" secondAttribute="centerY" id="PN6-Lp-gaQ"/>
+                            <constraint firstItem="fij-cB-fkM" firstAttribute="top" secondItem="4qk-I5-YsI" secondAttribute="top" constant="10" id="cOd-0A-CPy"/>
+                            <constraint firstItem="4qk-I5-YsI" firstAttribute="trailing" secondItem="ujk-au-ZUf" secondAttribute="trailing" constant="30" id="vXo-Rs-fDj"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="4qk-I5-YsI"/>
+                    </view>
+                    <connections>
+                        <outlet property="scoreLabel" destination="fij-cB-fkM" id="gJg-6l-hjd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-151.19999999999999" y="106.59670164917542"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Tile.png" width="32" height="36"/>
+    </resources>
+    <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+</document>
