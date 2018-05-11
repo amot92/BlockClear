@@ -57,6 +57,7 @@ class GameViewController: UIViewController {
         replayButton.setTitle("Play Again?", for: .normal)
         scene.blocksLayer.removeAllChildren()
         level.deltaY = 0.0
+        level.score = 0
         level.numRows = level.numStartingRows
         beginGame()
     }
