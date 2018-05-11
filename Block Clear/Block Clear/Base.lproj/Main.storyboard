@@ -40,6 +40,9 @@
                                 <state key="normal" title="Play Again?">
                                     <color key="titleColor" red="0.0" green="0.97680455450000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="replay:" destination="BV1-FR-VrT" eventType="touchUpInside" id="shA-Ke-4xZ"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -55,6 +58,7 @@
                         <viewLayoutGuide key="safeArea" id="4qk-I5-YsI"/>
                     </view>
                     <connections>
+                        <outlet property="pauseButton" destination="ujk-au-ZUf" id="VXc-mT-urh"/>
                         <outlet property="replayButton" destination="SEo-bo-iii" id="HOP-Pi-meK"/>
                         <outlet property="scoreLabel" destination="fij-cB-fkM" id="gJg-6l-hjd"/>
                     </connections>

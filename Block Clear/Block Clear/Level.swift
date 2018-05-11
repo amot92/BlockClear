@@ -25,7 +25,6 @@ class Level {
     
     var set: Set<Block> = []
     
-    //fix this
     var cieling: Float = 0.0
     
     var bottomRow: Int {
@@ -72,7 +71,7 @@ class Level {
     }
 
     func createInitialBlocks() -> Set<Block> {
-        for row in -1..<numRows - 1 {
+        for row in -1..<numStartingRows - 1 {
             for column in 1..<numColumns - 1 {
                 let blockType = getBlockType(column: column, row: row)
                 let newBlock = Block(column: column, row: row, blockType: blockType)
@@ -128,13 +127,6 @@ class Level {
         return blockType
     }
     
-    func endGame(){
-        blockRiseSpeed = 0.0
-        if let handler = gameOverHandler {
-            handler(set)
-        }
-    }
-    
     func performSwap(_ swap: Swap){
         if let toColumn = swap.blockB?.column {
             swap.blockB!.column = swap.blockA.column
@@ -149,7 +141,9 @@ class Level {
         for bloc in set {
             
             if(Float(bloc.row + 1) + deltaY >= cieling){
-                endGame()
+                if let handler = gameOverHandler {
+                    handler(set)
+                }
             }else if (Float(bloc.row) + deltaY >= Float(0.0)){
                 
                 //horizontal chain

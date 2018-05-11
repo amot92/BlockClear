@@ -17,6 +17,7 @@ class GameViewController: UIViewController {
     var level: Level!
     var swap: Swap? = nil
     
+    @IBOutlet weak var pauseButton: UIButton!
     @IBOutlet weak var scoreLabel: UILabel!
     @IBAction func pauseButton(_ sender: Any) {
         if !paused {
@@ -29,11 +30,22 @@ class GameViewController: UIViewController {
     }
     
     @IBOutlet weak var replayButton: UIButton!
+    @IBAction func replay(_ sender: Any) {
+        scene.blocksLayer.removeAllChildren()
+        level.deltaY = 0.0
+        level.numRows = level.numStartingRows
+        replayButton.isHidden = true
+        replayButton.isEnabled = false
+        pauseButton.isEnabled = true
+        paused = false
+        beginGame()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        replayButton.removeFromSuperview()
+        replayButton.isHidden = true
+        replayButton.isEnabled = false
         
         let skView = view as! SKView
         skView.isMultipleTouchEnabled = true
@@ -52,28 +64,15 @@ class GameViewController: UIViewController {
     }
     
     func gameOver(_ set: Set<Block>){
+        paused = true
+        pauseButton.isEnabled = false
         for bloc in set {
             bloc.sprite?.fillColor = SKColor.white
         }
-        view.isUserInteractionEnabled = false
-        
-//        let button = UIButton()
-//        button.setTitle("Play Again?", for: .normal)
-//        button.set
-//        button.setTitleColor(UIColor.blue, for: .normal)
-//        button.frame = CGRect(x: 15, y: -50, width: 300, height: 500)
-//        button.addTarget(self, action: Selector(("pressed")), for: .touchUpInside)
-//
-//        self.view.addSubview(button)
-//    }
-//
-//    func pressed(sender: UIButton!) {
-//        let alertView = UIAlertView()
-//        alertView.addButton(withTitle: "Ok")
-//        alertView.title = "title"
-//        alertView.message = "message"
-//        alertView.show()
-//        self.view.addSubview(replayButton)
+
+        replayButton.isHidden = false
+        replayButton.isEnabled = true
+        level.set = Set<Block>()
     }
     
     func setSwap(_ swap: Swap) {
@@ -121,8 +120,6 @@ class GameViewController: UIViewController {
             scene.animateFalls(falls: toFall)
         }
     }
-    
-    
     
     override var prefersStatusBarHidden: Bool {
         return true
