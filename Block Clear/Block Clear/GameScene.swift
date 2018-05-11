@@ -11,21 +11,18 @@ import GameplayKit
 
 // The scene draws the block sprites, and handles swipes.
 class GameScene: SKScene {
-    var selectedBlock: Block?
-    
     var level: Level!
-    
     let blocksLayer = SKNode()
     
     var spriteSize: CGSize?
     
     let tileNode = SKSpriteNode(imageNamed: "Tile")
-    
     var brickNode:SKShapeNode?
     
     var switchHandler: ((Swap) -> Void)?
     var updateHandler: (() -> Void)?
-    var moveHandler: ((Block, Int) -> Void)?
+    
+    var selectedBlock: Block?
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder) is not used in this app")
@@ -40,30 +37,26 @@ class GameScene: SKScene {
         background.size = size
         background.position = CGPoint(x: size.width/2, y: size.height/2)
         addChild(background)
-        
-        
     }
     
     
     override func didMove(to view: SKView) {
         backgroundColor = SKColor.black
         let blockSize = size.width / CGFloat(level.columns())
-        //need to do this in controller
-        
-        self.spriteSize = CGSize(width: blockSize, height: blockSize)
-        self.brickNode = SKShapeNode.init(rectOf: CGSize.init(width: blockSize, height: blockSize), cornerRadius: blockSize * 0.3)
         
         let playSize = CGSize(width: blockSize * CGFloat(level.columns() - 2), height: size.height * 0.9)
         let position = CGPoint(x: size.width/2, y: playSize.height/2)
-        
        
         tileNode.size = playSize
         tileNode.position = position
-        
         addChild(tileNode)
+        level.cieling = Float(tileNode.size.height / blockSize)
+        
+        spriteSize = CGSize(width: blockSize, height: blockSize)
+        brickNode = SKShapeNode.init(rectOf: CGSize.init(width: blockSize, height: blockSize), cornerRadius: blockSize * 0.3)
         addChild(blocksLayer)
 
-        level.cieling = Float(tileNode.size.height / blockSize)
+        
     }
     
     //convert row/column cordinates to screen coorinates
@@ -117,7 +110,6 @@ class GameScene: SKScene {
             } else if !block.isFalling {
                 let realDest = self.pointFor(yPos: Float(block.row) + deltaY, column: block.column)
                 block.sprite?.run(SKAction.move(to: realDest!, duration: 0.0))
-
             }
         }
         
@@ -159,9 +151,6 @@ class GameScene: SKScene {
         }
     }
     
-
-//////////////// USER INPUT HANDLING -- NEED TO USE GCD TO SEPERATE THREADS?? /////////////////////
-
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         selectedBlock?.sprite?.glowWidth = 0
         if let touch = touches.first {
@@ -195,8 +184,6 @@ class GameScene: SKScene {
            }
         }
     }
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
 
