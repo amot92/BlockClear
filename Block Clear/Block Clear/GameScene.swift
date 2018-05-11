@@ -181,6 +181,9 @@ class GameScene: SKScene {
          let swap = swap {
             handler(swap)
         }
+        
+        var ages = [Int]()
+        var ages2 = Int[]
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
