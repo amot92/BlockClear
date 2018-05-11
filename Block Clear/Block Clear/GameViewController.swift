@@ -79,25 +79,11 @@ class GameViewController: UIViewController {
     
     func handleUpdate() {
         if !paused {
-            
-
             DispatchQueue.main.async { self.raiseBlocks() }
             deleteBlocks()
-            DispatchQueue.main.async { self.level.findHoles() }
-//            DispatchQueue.main.async { self.pollSwap() }
             showScore()
         }
     }
-    
-//    func pollSwap() {
-//        if let swap = self.swap,
-//            !paused {
-//            self.scene.animateSwitch(swap)
-////            self.scene.animateSwitch()
-////            self.level.performSwap(swap)
-//            self.swap = nil
-//        }
-//    }
     
     func showScore() {
         scoreLabel.text = "\(level.score)"
@@ -111,6 +97,7 @@ class GameViewController: UIViewController {
     func deleteBlocks() {
         if let toDelete = level.findMatches() {
             scene.removeSprites(for: toDelete)
+            level.findHoles()
         }
     }
 

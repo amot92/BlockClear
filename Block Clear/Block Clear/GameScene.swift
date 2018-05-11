@@ -115,42 +115,6 @@ class GameScene: SKScene {
         
     }
     
-//    func animateSwitch() {
-//        selectedBlock?.sprite?.glowWidth = 0
-//        selectedBlock = nil
-//    }
-    
-//    func animateSwitch(_ swap: Swap) {
-//        selectedBlock?.sprite?.glowWidth = 0
-//        selectedBlock = nil
-//        
-//        swapping = true
-//        swap.blockA.isFalling = true
-//        var columnForA: Float?
-//        
-//        if let toColumnForA = swap.blockB?.column {
-//            columnForA = toColumnForA
-//            swap.blockB!.isFalling = true
-//            let colForB = swap.blockA.column
-//            let destForB = pointFor(yPos: Float(swap.blockB!.row) + level.deltaY, column: Int(colForB))
-//            swap.blockB!.sprite?.run(SKAction.move(to: destForB!, duration: 0.1), completion: {
-//                swap.blockB!.column = colForB
-//                swap.blockB!.isFalling = false
-//            })
-//            
-//        } else if let toColumnForA = swap.toColumn {
-//            columnForA = Float(toColumnForA)
-//        }
-//        
-//        let destForA = pointFor(yPos: Float(swap.blockA.row) + level.deltaY, column: Int(columnForA!))
-//
-//        swap.blockA.sprite?.run(SKAction.move(to: destForA!, duration: 0.1), completion: {
-//            swap.blockA.column = columnForA!
-//            swap.blockA.isFalling = false
-//            self.swapping = false
-//        })
-//    }
-    
     func removeSprites(for blocks: Set<Block>){
         for block in blocks {
             block.sprite?.removeFromParent()
@@ -158,10 +122,8 @@ class GameScene: SKScene {
     }
     
     private func trySwap(horizontalDelta: Int) {
-//        var swap: Swap?
         let toColumn = Int(selectedBlock!.column) + horizontalDelta
         if let toBlock = level.block(atRow: Int(selectedBlock!.row), column: toColumn) {
-//            swap = Swap(blockA: selectedBlock!, blockB: toBlock)
             selectedBlock!.toColumn = toColumn
             selectedBlock!.fromColumn = Int(selectedBlock!.column)
             selectedBlock!.isFalling = true
@@ -170,18 +132,17 @@ class GameScene: SKScene {
             toBlock.fromColumn = Int(toBlock.column)
             toBlock.isFalling = true
             
+            selectedBlock?.sprite?.glowWidth = 0
+            selectedBlock = nil
+            
         } else if (toColumn >= 1 && toColumn < level.numColumns - 1) {
-//            swap = Swap(blockA: selectedBlock!, toColumn: toColumn)
             selectedBlock!.toColumn = toColumn
             selectedBlock!.fromColumn = Int(selectedBlock!.column)
             selectedBlock!.isFalling = true
             
+            selectedBlock?.sprite?.glowWidth = 0
+            selectedBlock = nil
         }
-    
-//        if let handler = swapHandler,
-//         let swap = swap {
-//            handler(swap)
-//        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

@@ -158,15 +158,6 @@ class Level {
         return blockType
     }
     
-//    func performSwap(_ swap: Swap){
-//        if let toColumn = swap.blockB?.column {
-//            swap.blockB!.column = swap.blockA.column
-//            swap.blockA.column = toColumn
-//        } else if let toColumn = swap.toColumn {
-//            swap.blockA.column = toColumn
-//        }
-//    }
-    
     //deletes all matched blocks from the model
     func findMatches() -> Set<Block>? {
         for bloc in set {
