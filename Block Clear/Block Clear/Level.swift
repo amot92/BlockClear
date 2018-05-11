@@ -84,7 +84,7 @@ class Level {
     //should this be in controller?
     func updateBlockPositions() {
         deltaY += blockRiseSpeed
-//        blockRiseSpeed += acceleration
+        blockRiseSpeed += acceleration
         
         if(Float(bottomRow) + deltaY >= Float(0.0)){
             createNewBlockRow()
