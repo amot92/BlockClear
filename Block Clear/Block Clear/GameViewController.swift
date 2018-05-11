@@ -26,9 +26,12 @@ class GameViewController: UIViewController {
         }
     }
     
+    @IBOutlet weak var replayButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        replayButton.removeFromSuperview()
         
         let skView = view as! SKView
         skView.isMultipleTouchEnabled = true
@@ -40,7 +43,6 @@ class GameViewController: UIViewController {
         level.gameOverHandler = gameOver
         
         scene.switchHandler = handleSwitch
-        scene.moveHandler = handleMove
         scene.updateHandler = handleUpdate
         
         skView.presentScene(scene)
@@ -53,21 +55,23 @@ class GameViewController: UIViewController {
         }
         view.isUserInteractionEnabled = false
         
-        let button = UIButton()
-        button.setTitle("Play Again?", for: .normal)
-        button.setTitleColor(UIColor.blue, for: .normal)
-        button.frame = CGRect(x: 15, y: -50, width: 300, height: 500)
-        button.addTarget(self, action: Selector(("pressed")), for: .touchUpInside)
-
-        self.view.addSubview(button)
-    }
-    
-    func pressed(sender: UIButton!) {
-        let alertView = UIAlertView()
-        alertView.addButton(withTitle: "Ok")
-        alertView.title = "title"
-        alertView.message = "message"
-        alertView.show()
+//        let button = UIButton()
+//        button.setTitle("Play Again?", for: .normal)
+//        button.set
+//        button.setTitleColor(UIColor.blue, for: .normal)
+//        button.frame = CGRect(x: 15, y: -50, width: 300, height: 500)
+//        button.addTarget(self, action: Selector(("pressed")), for: .touchUpInside)
+//
+//        self.view.addSubview(button)
+//    }
+//
+//    func pressed(sender: UIButton!) {
+//        let alertView = UIAlertView()
+//        alertView.addButton(withTitle: "Ok")
+//        alertView.title = "title"
+//        alertView.message = "message"
+//        alertView.show()
+//        self.view.addSubview(replayButton)
     }
     
     func handleSwitch(_ swap: Swap) {
@@ -107,11 +111,7 @@ class GameViewController: UIViewController {
         }
     }
     
-    //moves a block to an empty space
-    func handleMove(_ block: Block, to column: Int) {
-        level.move(block, to: column)
-        scene.animateSwitch()
-    }
+    
     
     override var prefersStatusBarHidden: Bool {
         return true

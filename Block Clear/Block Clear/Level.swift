@@ -128,22 +128,17 @@ class Level {
         return blockType
     }
     
-    func move(_ block: Block, to column: Int){
-        block.column = column
-    }
-    
     func performSwap(_ swap: Swap){
-        let temp = swap.blockA.column
-        swap.blockA.column = swap.blockB.column
-        swap.blockB.column = temp
+        if let toColumn = swap.blockB?.column {
+            swap.blockB!.column = swap.blockA.column
+            swap.blockA.column = toColumn
+        } else if let toColumn = swap.toColumn {
+            swap.blockA.column = toColumn
+        }
     }
     
     func endGame(){
         blockRiseSpeed = 0.0
-        for bloc in set {
-            bloc.sprite?.fillColor = SKColor.white
-        }
-        
         if let handler = gameOverHandler {
             handler(set)
         }

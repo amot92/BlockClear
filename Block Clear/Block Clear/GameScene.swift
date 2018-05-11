@@ -145,15 +145,17 @@ class GameScene: SKScene {
     }
     
     private func trySwap(horizontalDelta: Int) {
+        var swap: Swap?
         let toColumn = selectedBlock!.column + horizontalDelta
-        if let toBlock = level.block(atRow: selectedBlock!.row, column: toColumn),
-            let handler = switchHandler {
-            let swap = Swap(blockA: selectedBlock!, blockB: toBlock)
-            handler(swap)
+        if let toBlock = level.block(atRow: selectedBlock!.row, column: toColumn) {
+            swap = Swap(blockA: selectedBlock!, blockB: toBlock)
         } else if (toColumn >= 1 && toColumn < level.numColumns - 1) {
-            if let handler = moveHandler {
-                handler(selectedBlock!, toColumn)
-            }
+            swap = Swap(blockA: selectedBlock!, toColumn: toColumn)
+        }
+    
+        if let handler = switchHandler,
+         let swap = swap {
+            handler(swap)
         }
     }
     

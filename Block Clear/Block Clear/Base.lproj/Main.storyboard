@@ -27,23 +27,35 @@
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ujk-au-ZUf">
                                 <rect key="frame" x="251" y="36" width="94" height="36"/>
+                                <color key="backgroundColor" red="1" green="0.57637232540000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="Pause" backgroundImage="Tile.png"/>
                                 <connections>
                                     <action selector="pauseButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="0Dr-kG-F0H"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SEo-bo-iii">
+                                <rect key="frame" x="63" y="307.5" width="248" height="72"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="50"/>
+                                <state key="normal" title="Play Again?">
+                                    <color key="titleColor" red="0.0" green="0.97680455450000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="SEo-bo-iii" firstAttribute="centerY" secondItem="4qk-I5-YsI" secondAttribute="centerY" id="5xm-JE-AJi"/>
                             <constraint firstItem="ujk-au-ZUf" firstAttribute="width" secondItem="fij-cB-fkM" secondAttribute="width" id="9cm-w3-4aR"/>
                             <constraint firstItem="fij-cB-fkM" firstAttribute="centerX" secondItem="4qk-I5-YsI" secondAttribute="centerX" id="CSI-1Z-RIp"/>
                             <constraint firstItem="ujk-au-ZUf" firstAttribute="centerY" secondItem="fij-cB-fkM" secondAttribute="centerY" id="PN6-Lp-gaQ"/>
                             <constraint firstItem="fij-cB-fkM" firstAttribute="top" secondItem="4qk-I5-YsI" secondAttribute="top" constant="10" id="cOd-0A-CPy"/>
+                            <constraint firstItem="SEo-bo-iii" firstAttribute="centerX" secondItem="4qk-I5-YsI" secondAttribute="centerX" id="tcN-SG-pYm"/>
                             <constraint firstItem="4qk-I5-YsI" firstAttribute="trailing" secondItem="ujk-au-ZUf" secondAttribute="trailing" constant="30" id="vXo-Rs-fDj"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="4qk-I5-YsI"/>
                     </view>
                     <connections>
+                        <outlet property="replayButton" destination="SEo-bo-iii" id="HOP-Pi-meK"/>
                         <outlet property="scoreLabel" destination="fij-cB-fkM" id="gJg-6l-hjd"/>
                     </connections>
                 </viewController>
