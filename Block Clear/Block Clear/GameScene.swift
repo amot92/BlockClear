@@ -41,7 +41,6 @@ class GameScene: SKScene {
         background.position = CGPoint(x: size.width/2, y: size.height/2)
         addChild(background)
         
-        addChild(blocksLayer)
         
     }
     
@@ -61,7 +60,9 @@ class GameScene: SKScene {
         tileNode.size = playSize
         tileNode.position = position
         
-        blocksLayer.addChild(tileNode)
+        addChild(tileNode)
+        addChild(blocksLayer)
+
         level.cieling = Float(tileNode.size.height / blockSize)
     }
     
