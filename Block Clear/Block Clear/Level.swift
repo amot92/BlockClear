@@ -65,7 +65,7 @@ class Level {
     
     func block(atRow row: Int, column: Int) -> Block? {
         for block in set {
-            if Int(block.column) == column && Int(block.row) == row {
+            if Int(block.fromColumn) == column && Int(block.row) == row {
                     return block
                 }
         }
@@ -98,16 +98,18 @@ class Level {
                         bloc.row -= blockFallSpeed
                     }
                 } else if let toColumn = bloc.toColumn {
-                    if bloc.fromColumn! < toColumn {
+                    if bloc.fromColumn < toColumn {
                         if bloc.column >= Float(toColumn) {
                             bloc.column = Float(toColumn)
+                            bloc.fromColumn = toColumn
                             bloc.isFalling = false
                         } else {
                             bloc.column += blockSwitchSpeed
                         }
-                    } else if bloc.fromColumn! > toColumn {
+                    } else if bloc.fromColumn > toColumn {
                         if bloc.column <= Float(toColumn) {
                             bloc.column = Float(toColumn)
+                            bloc.fromColumn = toColumn
                             bloc.isFalling = false
                         } else {
                             bloc.column -= blockSwitchSpeed

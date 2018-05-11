@@ -53,11 +53,12 @@ class Block: CustomStringConvertible, Hashable {
     var delete = false
     var isFalling = false
     var toRow: Float?
-    var fromColumn: Int?
+    var fromColumn: Int
     var toColumn: Int?
     
     init(column: Float, row: Float, blockType: BlockType) {
         self.column = column
+        self.fromColumn = Int(column)
         self.row = row
         self.blockType = blockType
     }

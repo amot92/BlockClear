@@ -69,6 +69,15 @@ class GameScene: SKScene {
         return nil
     }
     
+    func pointFor(yPos: Float, xPos: Float) -> CGPoint? {
+        if let size = spriteSize?.width {
+            return CGPoint(
+                x: CGFloat(xPos) * size + size / 2,
+                y: CGFloat(yPos) * size + size / 2)
+        }
+        return nil
+    }
+    
     //convert screen coordinates to column/row coordinates
     private func convertPoint(_ point: CGPoint) -> (success: Bool, column: Int, yPos: Float) {
         if point.x >= (spriteSize?.width)! && point.x < CGFloat(level.numColumns - 1) * (spriteSize?.width)! &&
@@ -108,7 +117,7 @@ class GameScene: SKScene {
                 self.addSprite(for: block, with: deltaY)
                 
             } else {
-                let realDest = self.pointFor(yPos: Float(block.row) + deltaY, column: Int(block.column))
+                let realDest = self.pointFor(yPos: Float(block.row) + deltaY, xPos: block.column)
                 block.sprite?.run(SKAction.move(to: realDest!, duration: 0.0))
             }
         }
@@ -143,6 +152,7 @@ class GameScene: SKScene {
             selectedBlock?.sprite?.glowWidth = 0
             selectedBlock = nil
         }
+        level.findHoles()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
