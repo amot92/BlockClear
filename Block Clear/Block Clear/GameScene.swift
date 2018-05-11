@@ -90,7 +90,7 @@ class GameScene: SKScene {
             sprite.strokeColor = SKColor.black
             sprite.fillColor = block.blockType.spriteColor
             sprite.lineWidth = 5
-            sprite.position = pointFor(yPos: Float(block.row) + deltaY, column: block.column)!
+            sprite.position = pointFor(yPos: Float(block.row) + deltaY, column: Int(block.column))!
             blocksLayer.addChild(sprite)
             block.sprite = sprite
         }
@@ -108,58 +108,47 @@ class GameScene: SKScene {
                 self.addSprite(for: block, with: deltaY)
                 
             } else {
-                let realDest = self.pointFor(yPos: Float(block.row) + deltaY, column: block.column)
+                let realDest = self.pointFor(yPos: Float(block.row) + deltaY, column: Int(block.column))
                 block.sprite?.run(SKAction.move(to: realDest!, duration: 0.0))
             }
         }
         
     }
     
-    func animateSwitch() {
-        selectedBlock?.sprite?.glowWidth = 0
-        selectedBlock = nil
-    }
+//    func animateSwitch() {
+//        selectedBlock?.sprite?.glowWidth = 0
+//        selectedBlock = nil
+//    }
     
-    func animateSwitch(_ swap: Swap) {
-        selectedBlock?.sprite?.glowWidth = 0
-        selectedBlock = nil
-        
-        swapping = true
-        swap.blockA.isFalling = true
-        var columnForA: Int?
-        
-        if let toColumnForA = swap.blockB?.column {
-            columnForA = toColumnForA
-            swap.blockB!.isFalling = true
-            let colForB = swap.blockA.column
-            let destForB = pointFor(yPos: Float(swap.blockB!.row) + level.deltaY, column: colForB)
-            swap.blockB!.sprite?.run(SKAction.move(to: destForB!, duration: 0.1), completion: {
-                swap.blockB!.column = colForB
-                swap.blockB!.isFalling = false
-            })
-            
-        } else if let toColumnForA = swap.toColumn {
-            columnForA = toColumnForA
-        }
-        
-        let destForA = pointFor(yPos: Float(swap.blockA.row) + level.deltaY, column: columnForA!)
-
-        swap.blockA.sprite?.run(SKAction.move(to: destForA!, duration: 0.1), completion: {
-            swap.blockA.column = columnForA!
-            swap.blockA.isFalling = false
-            self.swapping = false
-        })
-    }
-    
-//    func animateFalls(falls: [Fall]){
-//        for fall in falls {
-//            let realDest = pointFor(yPos: Float(fall.toRow) + level.deltaY, column: fall.block.column)
-//            let duration = Double(fall.block.row - fall.toRow) * 0.2
-//            fall.block.sprite?.run(SKAction.move(to: realDest!, duration: duration), completion: {
-//                fall.block.row = fall.toRow
-//                fall.block.isFalling = false
+//    func animateSwitch(_ swap: Swap) {
+//        selectedBlock?.sprite?.glowWidth = 0
+//        selectedBlock = nil
+//        
+//        swapping = true
+//        swap.blockA.isFalling = true
+//        var columnForA: Float?
+//        
+//        if let toColumnForA = swap.blockB?.column {
+//            columnForA = toColumnForA
+//            swap.blockB!.isFalling = true
+//            let colForB = swap.blockA.column
+//            let destForB = pointFor(yPos: Float(swap.blockB!.row) + level.deltaY, column: Int(colForB))
+//            swap.blockB!.sprite?.run(SKAction.move(to: destForB!, duration: 0.1), completion: {
+//                swap.blockB!.column = colForB
+//                swap.blockB!.isFalling = false
 //            })
+//            
+//        } else if let toColumnForA = swap.toColumn {
+//            columnForA = Float(toColumnForA)
 //        }
+//        
+//        let destForA = pointFor(yPos: Float(swap.blockA.row) + level.deltaY, column: Int(columnForA!))
+//
+//        swap.blockA.sprite?.run(SKAction.move(to: destForA!, duration: 0.1), completion: {
+//            swap.blockA.column = columnForA!
+//            swap.blockA.isFalling = false
+//            self.swapping = false
+//        })
 //    }
     
     func removeSprites(for blocks: Set<Block>){
@@ -169,18 +158,30 @@ class GameScene: SKScene {
     }
     
     private func trySwap(horizontalDelta: Int) {
-        var swap: Swap?
-        let toColumn = selectedBlock!.column + horizontalDelta
+//        var swap: Swap?
+        let toColumn = Int(selectedBlock!.column) + horizontalDelta
         if let toBlock = level.block(atRow: Int(selectedBlock!.row), column: toColumn) {
-            swap = Swap(blockA: selectedBlock!, blockB: toBlock)
+//            swap = Swap(blockA: selectedBlock!, blockB: toBlock)
+            selectedBlock!.toColumn = toColumn
+            selectedBlock!.fromColumn = Int(selectedBlock!.column)
+            selectedBlock!.isFalling = true
+            
+            toBlock.toColumn = selectedBlock!.fromColumn
+            toBlock.fromColumn = Int(toBlock.column)
+            toBlock.isFalling = true
+            
         } else if (toColumn >= 1 && toColumn < level.numColumns - 1) {
-            swap = Swap(blockA: selectedBlock!, toColumn: toColumn)
+//            swap = Swap(blockA: selectedBlock!, toColumn: toColumn)
+            selectedBlock!.toColumn = toColumn
+            selectedBlock!.fromColumn = Int(selectedBlock!.column)
+            selectedBlock!.isFalling = true
+            
         }
     
-        if let handler = swapHandler,
-         let swap = swap {
-            handler(swap)
-        }
+//        if let handler = swapHandler,
+//         let swap = swap {
+//            handler(swap)
+//        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -205,9 +206,9 @@ class GameScene: SKScene {
         
         if convertedPoint.success {
             var horizontalDelta = 0
-            if convertedPoint.column < selectedBlock!.column {
+            if convertedPoint.column < Int(selectedBlock!.column) {
                 horizontalDelta = -1
-            } else if convertedPoint.column > selectedBlock!.column {
+            } else if convertedPoint.column > Int(selectedBlock!.column) {
                 horizontalDelta = 1
             }
             

@@ -74,7 +74,7 @@ class GameViewController: UIViewController {
     }
     
     func setSwap(_ swap: Swap) {
-            self.swap = swap
+        self.swap = swap
     }
     
     func handleUpdate() {
@@ -84,20 +84,20 @@ class GameViewController: UIViewController {
             DispatchQueue.main.async { self.raiseBlocks() }
             deleteBlocks()
             DispatchQueue.main.async { self.level.findHoles() }
-            DispatchQueue.main.async { self.pollSwap() }
+//            DispatchQueue.main.async { self.pollSwap() }
             showScore()
         }
     }
     
-    func pollSwap() {
-        if let swap = self.swap,
-            !paused {
-            self.scene.animateSwitch(swap)
-//            self.scene.animateSwitch()
-//            self.level.performSwap(swap)
-            self.swap = nil
-        }
-    }
+//    func pollSwap() {
+//        if let swap = self.swap,
+//            !paused {
+//            self.scene.animateSwitch(swap)
+////            self.scene.animateSwitch()
+////            self.level.performSwap(swap)
+//            self.swap = nil
+//        }
+//    }
     
     func showScore() {
         scoreLabel.text = "\(level.score)"
@@ -113,11 +113,7 @@ class GameViewController: UIViewController {
             scene.removeSprites(for: toDelete)
         }
     }
-    
-//    func fillHoles() {
-//        level.findHoles()
-//    }
-    
+
     override var prefersStatusBarHidden: Bool {
         return true
     }

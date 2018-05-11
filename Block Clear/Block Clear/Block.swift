@@ -34,7 +34,7 @@ class Block: CustomStringConvertible, Hashable {
     static var numRows = 0
     
     var hashValue: Int {
-        return Int(row) * 10 + column
+        return Int(row * Float(10) + column)
     }
     
     static func ==(lhs: Block, rhs: Block) -> Bool {
@@ -46,16 +46,17 @@ class Block: CustomStringConvertible, Hashable {
         return "\(blockType) column:\(column) row: \(row)"
     }
     
-    var column: Int
+    var column: Float
     var row: Float
     let blockType: BlockType
     var sprite: SKShapeNode?
     var delete = false
     var isFalling = false
     var toRow: Float?
+    var fromColumn: Int?
     var toColumn: Int?
     
-    init(column: Int, row: Float, blockType: BlockType) {
+    init(column: Float, row: Float, blockType: BlockType) {
         self.column = column
         self.row = row
         self.blockType = blockType
