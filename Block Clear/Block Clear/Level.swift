@@ -20,8 +20,8 @@ class Level {
     
      var gameOverHandler: ((Set<Block>) -> Void)?
     
-    var acceleration:Float = 0.00001
-    var blockRiseSpeed:Float = 0.01
+    var acceleration:Float = 0.0000001
+    var blockRiseSpeed:Float = 0.001
     
     var set: Set<Block> = []
     

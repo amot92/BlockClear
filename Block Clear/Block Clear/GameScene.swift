@@ -154,7 +154,7 @@ class GameScene: SKScene {
     func animateFalls(falls: [Fall]){
         for fall in falls {
             let realDest = pointFor(yPos: Float(fall.toRow) + level.deltaY, column: fall.block.column)
-            let duration = Double(fall.block.row - fall.toRow) * 0.1
+            let duration = Double(fall.block.row - fall.toRow) * 0.2
             fall.block.sprite?.run(SKAction.move(to: realDest!, duration: duration), completion: {
                 fall.block.row = fall.toRow
                 fall.block.isFalling = false

@@ -79,11 +79,12 @@ class GameViewController: UIViewController {
     
     func handleUpdate() {
         if !paused {
-            DispatchQueue.main.async { self.pollSwap() }
+            
 
             DispatchQueue.main.async { self.raiseBlocks() }
             deleteBlocks()
             DispatchQueue.main.async { self.fillHoles() }
+            DispatchQueue.main.async { self.pollSwap() }
             showScore()
         }
     }
