@@ -17,35 +17,12 @@ class GameViewController: UIViewController {
     var level: Level!
     var swap: Swap? = nil
     
-    @IBOutlet weak var pauseButton: UIButton!
     @IBOutlet weak var scoreLabel: UILabel!
-    @IBAction func pauseButton(_ sender: Any) {
-        if !paused {
-            paused = true
-            scene.blocksLayer.removeFromParent()
-        } else {
-            paused = false
-            scene.addChild(scene.blocksLayer)
-        }
-    }
-    
-    @IBOutlet weak var replayButton: UIButton!
-    @IBAction func replay(_ sender: Any) {
-        scene.blocksLayer.removeAllChildren()
-        level.deltaY = 0.0
-        level.numRows = level.numStartingRows
-        replayButton.isHidden = true
-        replayButton.isEnabled = false
-        pauseButton.isEnabled = true
-        paused = false
-        beginGame()
-    }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        replayButton.isHidden = true
-        replayButton.isEnabled = false
+        pauseButton.isEnabled = false
         
         let skView = view as! SKView
         skView.isMultipleTouchEnabled = true
@@ -58,8 +35,29 @@ class GameViewController: UIViewController {
         
         scene.swapHandler = setSwap
         scene.updateHandler = handleUpdate
-        
+        paused = true
         skView.presentScene(scene)
+    }
+    
+    @IBOutlet weak var pauseButton: UIButton!
+    @IBAction func pauseButton(_ sender: Any) {
+        if !paused {
+            paused = true
+            scene.blocksLayer.removeFromParent()
+            pauseButton.setTitle("Play", for: .normal)
+        } else {
+            paused = false
+            scene.addChild(scene.blocksLayer)
+            pauseButton.setTitle("Pause", for: .normal)
+        }
+    }
+    
+    @IBOutlet weak var replayButton: UIButton!
+    @IBAction func replay(_ sender: Any) {
+        replayButton.setTitle("Play Again?", for: .normal)
+        scene.blocksLayer.removeAllChildren()
+        level.deltaY = 0.0
+        level.numRows = level.numStartingRows
         beginGame()
     }
     
@@ -69,7 +67,6 @@ class GameViewController: UIViewController {
         for bloc in set {
             bloc.sprite?.fillColor = SKColor.white
         }
-
         replayButton.isHidden = false
         replayButton.isEnabled = true
         level.set = Set<Block>()
@@ -130,6 +127,10 @@ class GameViewController: UIViewController {
     }
     
     func beginGame() {
+        paused = false
+        replayButton.isHidden = true
+        replayButton.isEnabled = false
+        pauseButton.isEnabled = true
         let newBlocks = level.createInitialBlocks()
         scene.addInitialSprites(for: newBlocks)
     }
