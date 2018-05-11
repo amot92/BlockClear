@@ -85,8 +85,10 @@ class GameViewController: UIViewController {
     }
     
     func handleSwitch(_ swap: Swap) {
-        level.performSwap(swap)
-        scene.animateSwitch()
+        if !paused {
+            level.performSwap(swap)
+            scene.animateSwitch()
+        }
     }
     
     //moves a block to an empty space
