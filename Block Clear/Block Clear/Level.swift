@@ -22,6 +22,7 @@ class Level {
     
     var acceleration:Float = 0.0000001
     var blockRiseSpeed:Float = 0.001
+    var blockFallSpeed:Float = 0.1
     
     var set: Set<Block> = []
     
@@ -63,7 +64,7 @@ class Level {
     
     func block(atRow row: Int, column: Int) -> Block? {
         for block in set {
-            if block.column == column && block.row == row {
+            if block.column == column && Int(block.row) == row {
                     return block
                 }
         }
@@ -74,7 +75,7 @@ class Level {
         for row in -1..<numStartingRows - 1 {
             for column in 1..<numColumns - 1 {
                 let blockType = getBlockType(column: column, row: row)
-                let newBlock = Block(column: column, row: row, blockType: blockType)
+                let newBlock = Block(column: column, row: Float(row), blockType: blockType)
                 set.insert(newBlock)
             }
         }
@@ -86,6 +87,21 @@ class Level {
         deltaY += blockRiseSpeed
         blockRiseSpeed += acceleration
         
+        for bloc in set {
+            if bloc.isFalling {
+                if let row = bloc.toRow {
+                    print("row = \(bloc.row) toRow = \(row)")
+                    if bloc.row <= row {
+                        print("row = toRow")
+                        bloc.row = row
+                        bloc.isFalling = false
+                    } else {
+                        bloc.row -= blockFallSpeed
+                    }
+                }
+            }
+        }
+        
         if(Float(bottomRow) + deltaY >= Float(0.0)){
             createNewBlockRow()
         }
@@ -94,7 +110,7 @@ class Level {
     func createNewBlockRow(){
         for column in 1...numColumns - 2 {
             let blockType = getBlockType(column: column, row: bottomRow - 1)
-            let newBlock = Block(column: column, row: bottomRow - 1, blockType: blockType)
+            let newBlock = Block(column: column, row: Float(bottomRow - 1), blockType: blockType)
             set.insert(newBlock)
         }
         numRows += 1
@@ -147,8 +163,8 @@ class Level {
             }else if (Float(bloc.row) + deltaY >= Float(0.0)){
                 
                 //horizontal chain
-                if let lastBlockInRow = block(atRow: bloc.row, column: bloc.column - 1),
-                 let blockBeforeLastInRow = block(atRow: bloc.row, column: bloc.column - 2){
+                if let lastBlockInRow = block(atRow: Int(bloc.row), column: bloc.column - 1),
+                 let blockBeforeLastInRow = block(atRow: Int(bloc.row), column: bloc.column - 2){
                     if lastBlockInRow.blockType == bloc.blockType && blockBeforeLastInRow.blockType == bloc.blockType {
                         
                         lastBlockInRow.delete = true
@@ -158,8 +174,8 @@ class Level {
                 }
 
                 //vertical chain
-                if let lastBlockInColumn = block(atRow: bloc.row + 1, column: bloc.column),
-                 let blockBeforelastInColumn = block(atRow: bloc.row + 2, column: bloc.column) {
+                if let lastBlockInColumn = block(atRow: Int(bloc.row) + 1, column: bloc.column),
+                 let blockBeforelastInColumn = block(atRow: Int(bloc.row) + 2, column: bloc.column) {
                     if lastBlockInColumn.blockType == bloc.blockType && blockBeforelastInColumn.blockType == bloc.blockType {
                         
                         lastBlockInColumn.delete = true
@@ -178,8 +194,8 @@ class Level {
         return nil
     }
     
-    func findHoles() -> [Fall]? {
-        var falls = [Fall]()
+    func findHoles() {
+//        var falls = [Fall]()
         
         for column in 1..<numColumns - 1 {
             for row in (bottomRow ..< topRow) {
@@ -190,8 +206,10 @@ class Level {
                     //2 - search up the column for a block
                     for lookup in (row + 1) ... topRow {
                         if let bloc = block(atRow: lookup, column: column) {
-                            let fall = Fall(block: bloc, toRow: holeRow)
-                            falls.append(fall)
+//                            let fall = Fall(block: bloc, toRow: holeRow)
+                            bloc.isFalling = true
+                            bloc.toRow = Float(holeRow)
+//                            falls.append(fall)
                             holeRow += 1
                         }
                     }
@@ -199,8 +217,8 @@ class Level {
                 }
             }
         }
-        if falls.count != 0 { return falls }
-        return nil
+//        if falls.count != 0 { return falls }
+//        return nil
     }
     
 }

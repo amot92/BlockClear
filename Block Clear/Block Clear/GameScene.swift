@@ -107,7 +107,7 @@ class GameScene: SKScene {
             if(block.sprite == nil){
                 self.addSprite(for: block, with: deltaY)
                 
-            } else if !block.isFalling {
+            } else {
                 let realDest = self.pointFor(yPos: Float(block.row) + deltaY, column: block.column)
                 block.sprite?.run(SKAction.move(to: realDest!, duration: 0.0))
             }
@@ -151,16 +151,16 @@ class GameScene: SKScene {
         })
     }
     
-    func animateFalls(falls: [Fall]){
-        for fall in falls {
-            let realDest = pointFor(yPos: Float(fall.toRow) + level.deltaY, column: fall.block.column)
-            let duration = Double(fall.block.row - fall.toRow) * 0.2
-            fall.block.sprite?.run(SKAction.move(to: realDest!, duration: duration), completion: {
-                fall.block.row = fall.toRow
-                fall.block.isFalling = false
-            })
-        }
-    }
+//    func animateFalls(falls: [Fall]){
+//        for fall in falls {
+//            let realDest = pointFor(yPos: Float(fall.toRow) + level.deltaY, column: fall.block.column)
+//            let duration = Double(fall.block.row - fall.toRow) * 0.2
+//            fall.block.sprite?.run(SKAction.move(to: realDest!, duration: duration), completion: {
+//                fall.block.row = fall.toRow
+//                fall.block.isFalling = false
+//            })
+//        }
+//    }
     
     func removeSprites(for blocks: Set<Block>){
         for block in blocks {
@@ -171,7 +171,7 @@ class GameScene: SKScene {
     private func trySwap(horizontalDelta: Int) {
         var swap: Swap?
         let toColumn = selectedBlock!.column + horizontalDelta
-        if let toBlock = level.block(atRow: selectedBlock!.row, column: toColumn) {
+        if let toBlock = level.block(atRow: Int(selectedBlock!.row), column: toColumn) {
             swap = Swap(blockA: selectedBlock!, blockB: toBlock)
         } else if (toColumn >= 1 && toColumn < level.numColumns - 1) {
             swap = Swap(blockA: selectedBlock!, toColumn: toColumn)
@@ -181,9 +181,6 @@ class GameScene: SKScene {
          let swap = swap {
             handler(swap)
         }
-        
-        var ages = [Int]()
-        var ages2 = Int[]
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

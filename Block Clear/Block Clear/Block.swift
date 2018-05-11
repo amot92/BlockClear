@@ -47,13 +47,15 @@ class Block: CustomStringConvertible, Hashable {
     }
     
     var column: Int
-    var row: Int
+    var row: Float
     let blockType: BlockType
     var sprite: SKShapeNode?
     var delete = false
     var isFalling = false
+    var toRow: Float?
+    var toColumn: Int?
     
-    init(column: Int, row: Int, blockType: BlockType) {
+    init(column: Int, row: Float, blockType: BlockType) {
         self.column = column
         self.row = row
         self.blockType = blockType

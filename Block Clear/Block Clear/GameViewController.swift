@@ -83,7 +83,7 @@ class GameViewController: UIViewController {
 
             DispatchQueue.main.async { self.raiseBlocks() }
             deleteBlocks()
-            DispatchQueue.main.async { self.fillHoles() }
+            DispatchQueue.main.async { self.level.findHoles() }
             DispatchQueue.main.async { self.pollSwap() }
             showScore()
         }
@@ -114,11 +114,9 @@ class GameViewController: UIViewController {
         }
     }
     
-    func fillHoles() {
-        if let toFall = level.findHoles() {
-            scene.animateFalls(falls: toFall)
-        }
-    }
+//    func fillHoles() {
+//        level.findHoles()
+//    }
     
     override var prefersStatusBarHidden: Bool {
         return true
