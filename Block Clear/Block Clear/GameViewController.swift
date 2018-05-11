@@ -92,9 +92,9 @@ class GameViewController: UIViewController {
     func pollSwap() {
         if let swap = self.swap,
             !paused {
-//            self.scene.animateSwitch(swap)
-            self.scene.animateSwitch()
-            self.level.performSwap(swap)
+            self.scene.animateSwitch(swap)
+//            self.scene.animateSwitch()
+//            self.level.performSwap(swap)
             self.swap = nil
         }
     }
