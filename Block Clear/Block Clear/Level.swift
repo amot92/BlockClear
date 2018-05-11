@@ -128,19 +128,19 @@ class Level {
         return blockType
     }
     
-//    func performSwap(_ swap: Swap){
-//        if let toColumn = swap.blockB?.column {
-//            swap.blockB!.column = swap.blockA.column
-//            swap.blockA.column = toColumn
-//        } else if let toColumn = swap.toColumn {
-//            swap.blockA.column = toColumn
-//        }
-//    }
-    
     func endGame(){
         blockRiseSpeed = 0.0
         if let handler = gameOverHandler {
             handler(set)
+        }
+    }
+    
+    func performSwap(_ swap: Swap){
+        if let toColumn = swap.blockB?.column {
+            swap.blockB!.column = swap.blockA.column
+            swap.blockA.column = toColumn
+        } else if let toColumn = swap.toColumn {
+            swap.blockA.column = toColumn
         }
     }
     
@@ -177,7 +177,8 @@ class Level {
             }
         }
         let toDelete = set.filter { $0.delete }
-    
+        set = set.filter { !$0.delete }
+
         score += toDelete.count
         if !toDelete.isEmpty { return toDelete }
         return nil

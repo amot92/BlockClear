@@ -19,10 +19,12 @@ class GameScene: SKScene {
     let tileNode = SKSpriteNode(imageNamed: "Tile")
     var brickNode:SKShapeNode?
     
-    var switchHandler: ((Swap) -> Void)?
+    var swapHandler: ((Swap) -> Void)?
     var updateHandler: (() -> Void)?
     
     var selectedBlock: Block?
+    
+    var swapping = false
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder) is not used in this app")
@@ -55,8 +57,6 @@ class GameScene: SKScene {
         spriteSize = CGSize(width: blockSize, height: blockSize)
         brickNode = SKShapeNode.init(rectOf: CGSize.init(width: blockSize, height: blockSize), cornerRadius: blockSize * 0.3)
         addChild(blocksLayer)
-
-        
     }
     
     //convert row/column cordinates to screen coorinates
@@ -124,6 +124,7 @@ class GameScene: SKScene {
         selectedBlock?.sprite?.glowWidth = 0
         selectedBlock = nil
         
+        swapping = true
         swap.blockA.isFalling = true
         var columnForA: Int?
         
@@ -137,23 +138,24 @@ class GameScene: SKScene {
                 swap.blockB!.isFalling = false
             })
             
-            
         } else if let toColumnForA = swap.toColumn {
             columnForA = toColumnForA
         }
         
         let destForA = pointFor(yPos: Float(swap.blockA.row) + level.deltaY, column: columnForA!)
 
-        swap.blockA.sprite?.run(SKAction.move(to: destForA!, duration: 0.3), completion: {
+        swap.blockA.sprite?.run(SKAction.move(to: destForA!, duration: 0.1), completion: {
             swap.blockA.column = columnForA!
             swap.blockA.isFalling = false
+            self.swapping = false
         })
     }
     
     func animateFalls(falls: [Fall]){
         for fall in falls {
             let realDest = pointFor(yPos: Float(fall.toRow) + level.deltaY, column: fall.block.column)
-            fall.block.sprite?.run(SKAction.move(to: realDest!, duration: 0.3), completion: {
+            let duration = Double(fall.block.row - fall.toRow) * 0.1
+            fall.block.sprite?.run(SKAction.move(to: realDest!, duration: duration), completion: {
                 fall.block.row = fall.toRow
                 fall.block.isFalling = false
             })
@@ -175,7 +177,7 @@ class GameScene: SKScene {
             swap = Swap(blockA: selectedBlock!, toColumn: toColumn)
         }
     
-        if let handler = switchHandler,
+        if let handler = swapHandler,
          let swap = swap {
             handler(swap)
         }

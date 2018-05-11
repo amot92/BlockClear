@@ -15,6 +15,8 @@ class GameViewController: UIViewController {
     var paused = false
     var scene: GameScene!
     var level: Level!
+    var swap: Swap? = nil
+    
     @IBOutlet weak var scoreLabel: UILabel!
     @IBAction func pauseButton(_ sender: Any) {
         if !paused {
@@ -42,7 +44,7 @@ class GameViewController: UIViewController {
         scene.level = level
         level.gameOverHandler = gameOver
         
-        scene.switchHandler = handleSwitch
+        scene.swapHandler = setSwap
         scene.updateHandler = handleUpdate
         
         skView.presentScene(scene)
@@ -74,20 +76,28 @@ class GameViewController: UIViewController {
 //        self.view.addSubview(replayButton)
     }
     
-    func handleSwitch(_ swap: Swap) {
-        if !paused {
-//            level.performSwap(swap)
-//            scene.animateSwitch()
-            scene.animateSwitch(swap)
-        }
+    func setSwap(_ swap: Swap) {
+            self.swap = swap
     }
     
     func handleUpdate() {
         if !paused {
+            DispatchQueue.main.async { self.pollSwap() }
+
             DispatchQueue.main.async { self.raiseBlocks() }
             deleteBlocks()
-            DispatchQueue.global().async { self.fillHoles() }
+            DispatchQueue.main.async { self.fillHoles() }
             showScore()
+        }
+    }
+    
+    func pollSwap() {
+        if let swap = self.swap,
+            !paused {
+//            self.scene.animateSwitch(swap)
+            self.scene.animateSwitch()
+            self.level.performSwap(swap)
+            self.swap = nil
         }
     }
     
@@ -103,11 +113,6 @@ class GameViewController: UIViewController {
     func deleteBlocks() {
         if let toDelete = level.findMatches() {
             scene.removeSprites(for: toDelete)
-            for block in toDelete {
-                block.sprite?.removeFromParent()
-//                level.set.remove(block)
-            }
-            level.set = level.set.filter { !$0.delete }
         }
     }
     
