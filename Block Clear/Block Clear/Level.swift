@@ -91,20 +91,22 @@ class Level {
     }
     
     func updateBlocks() {
-        if isSwapping {
-            swapBlocks()
-        } else if isFalling {
-            dropBlocks()
-        } else {
-            if let toDelete = findMatches() {
-                for bloc in toDelete {
-                    bloc.sprite?.removeFromParent()
-                }
+        //turn this into a handler
+        if let toDelete = findMatches() {
+            for bloc in toDelete {
+                bloc.sprite?.removeFromParent()
             }
-            findHoles()
         }
+        
+        if self.isSwapping { swapBlocks() }
+        else if self.isFalling { dropBlocks() }
+        else { findHoles() }
         raiseBlocks()
     }
+    
+//    deleteBlocks() {
+//
+//    }
     
     func raiseBlocks() {
         deltaY += (blockRiseSpeed + addedVelocity)
@@ -124,7 +126,7 @@ class Level {
                         if bloc.column >= Float(toColumn) {
                             bloc.column = Float(toColumn)
                             bloc.fromColumn = toColumn
-                            bloc.isFalling = false
+                            bloc.isSwapping = false
                         } else {
                             bloc.column += blockSwitchSpeed
                             somethingSwapped = true
@@ -133,7 +135,7 @@ class Level {
                         if bloc.column <= Float(toColumn) {
                             bloc.column = Float(toColumn)
                             bloc.fromColumn = toColumn
-                            bloc.isFalling = false
+                            bloc.isSwapping = false
                         } else {
                             bloc.column -= blockSwitchSpeed
                             somethingSwapped = true
@@ -213,10 +215,13 @@ class Level {
                 if let lastBlockInRow = block(atRow: Int(bloc.row), column: Int(bloc.column) - 1),
                  let blockBeforeLastInRow = block(atRow: Int(bloc.row), column: Int(bloc.column) - 2){
                     if lastBlockInRow.blockType == bloc.blockType && blockBeforeLastInRow.blockType == bloc.blockType {
+                        if !lastBlockInRow.isFalling && !blockBeforeLastInRow.isFalling && !bloc.isFalling && !lastBlockInRow.isSwapping && !blockBeforeLastInRow.isSwapping && !bloc.isSwapping {
                         
-                        lastBlockInRow.delete = true
-                        blockBeforeLastInRow.delete = true
-                        bloc.delete = true
+                            lastBlockInRow.delete = true
+                            blockBeforeLastInRow.delete = true
+                            bloc.delete = true
+                            
+                        }
                     }
                 }
 
@@ -224,10 +229,13 @@ class Level {
                 if let lastBlockInColumn = block(atRow: Int(bloc.row) + 1, column: Int(bloc.column)),
                  let blockBeforelastInColumn = block(atRow: Int(bloc.row) + 2, column: Int(bloc.column)) {
                     if lastBlockInColumn.blockType == bloc.blockType && blockBeforelastInColumn.blockType == bloc.blockType {
-                        
-                        lastBlockInColumn.delete = true
-                        blockBeforelastInColumn.delete = true
-                        bloc.delete = true
+                        if !lastBlockInColumn.isFalling && !blockBeforelastInColumn.isFalling && !bloc.isFalling && !lastBlockInColumn.isSwapping && !blockBeforelastInColumn.isSwapping && !bloc.isSwapping {
+                            
+                            lastBlockInColumn.delete = true
+                            blockBeforelastInColumn.delete = true
+                            bloc.delete = true
+                            
+                        }
                     }
                 }
                 
