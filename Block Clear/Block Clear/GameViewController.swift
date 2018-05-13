@@ -37,6 +37,19 @@ class GameViewController: UIViewController {
         
         paused = true
         skView.presentScene(scene)
+        
+        speedButton.addTarget(self, action: #selector(speedUp), for: .touchDown)
+        speedButton.addTarget(self, action: #selector(slowDown), for: .touchUpInside)
+        speed = level.blockRiseSpeed
+    }
+    
+    @objc func speedUp() {
+        speed = level.blockRiseSpeed
+        level.blockRiseSpeed = speed * 15
+    }
+    
+    @objc func slowDown() {
+        level.blockRiseSpeed = speed
     }
     
     func beginGame() {
