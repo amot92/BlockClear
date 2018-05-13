@@ -23,7 +23,7 @@ class Level {
     var isFalling = false
     var isSwapping = false
     
-    var acceleration:Float = 0.0000001
+//    var acceleration:Float = 0.0000001
     var blockRiseSpeed:Float = 0.001
     let blockFallSpeed:Float = 0.1
     let blockSwitchSpeed:Float = 0.1
@@ -31,6 +31,10 @@ class Level {
     var set: Set<Block> = []
     
     var cieling: Float = 0.0
+    
+    var addedVelocity: Float {
+        return Float(score) * 0.00001
+    }
     
     var bottomRow: Int {
         return numStartingRows - numRows - 1
@@ -103,8 +107,7 @@ class Level {
     }
     
     func raiseBlocks() {
-        deltaY += blockRiseSpeed
-        blockRiseSpeed += acceleration
+        deltaY += (blockRiseSpeed + addedVelocity)
         
         if(Float(bottomRow) + deltaY >= Float(0.0)){
             createNewBlockRow()
@@ -112,6 +115,7 @@ class Level {
     }
     
     func swapBlocks() {
+        raiseBlocks()
         var somethingSwapped = false
         for bloc in set {
             if bloc.isSwapping {
