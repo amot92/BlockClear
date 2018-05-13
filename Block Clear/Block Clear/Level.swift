@@ -242,27 +242,25 @@ class Level {
     }
     
     func findHoles() {
-//        if !isSwapping && !isFalling {
-            for column in 1..<numColumns - 1 {
-                for row in (bottomRow ..< topRow) {
-                    var holeRow = row
-                    //1 - if hole at (column, row)
-                    if block(atRow: row, column: column) == nil {
-                        
-                        //2 - search up the column for a block
-                        for lookup in (row + 1) ... topRow {
-                            if let bloc = block(atRow: lookup, column: column) {
-                                bloc.isFalling = true
-                                bloc.toRow = Float(holeRow)
-                                holeRow += 1
-                                isFalling = true
-                            }
+        for column in 1..<numColumns - 1 {
+            for row in (bottomRow ..< topRow) {
+                var holeRow = row
+                //1 - if hole at (column, row)
+                if block(atRow: row, column: column) == nil {
+                    
+                    //2 - search up the column for a block
+                    for lookup in (row + 1) ... topRow {
+                        if let bloc = block(atRow: lookup, column: column) {
+                            bloc.isFalling = true
+                            bloc.toRow = Float(holeRow)
+                            holeRow += 1
+                            isFalling = true
                         }
-                        break
                     }
+                    break
                 }
             }
-//        }
+        }
     }
     
 }
