@@ -96,7 +96,6 @@ class Level {
         } else if isFalling {
             dropBlocks()
         } else {
-            raiseBlocks()
             if let toDelete = findMatches() {
                 for bloc in toDelete {
                     bloc.sprite?.removeFromParent()
@@ -104,6 +103,7 @@ class Level {
             }
             findHoles()
         }
+        raiseBlocks()
     }
     
     func raiseBlocks() {
@@ -242,7 +242,7 @@ class Level {
     }
     
     func findHoles() {
-        if !isSwapping {
+        if !isSwapping && !isFalling {
             for column in 1..<numColumns - 1 {
                 for row in (bottomRow ..< topRow) {
                     var holeRow = row
