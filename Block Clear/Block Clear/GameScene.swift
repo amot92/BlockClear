@@ -26,6 +26,8 @@ class GameScene: SKScene {
     
     var swapping = false
     
+    var falling = false
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder) is not used in this app")
     }
@@ -116,7 +118,7 @@ class GameScene: SKScene {
             if(block.sprite == nil){
                 self.addSprite(for: block, with: deltaY)
                 
-            } else {
+            } else if (level.isFalling && block.isFalling) || (level.isFalling) {
                 let realDest = self.pointFor(yPos: Float(block.row) + deltaY, xPos: block.column)
                 block.sprite?.run(SKAction.move(to: realDest!, duration: 0.0))
             }
@@ -135,24 +137,25 @@ class GameScene: SKScene {
         if let toBlock = level.block(atRow: Int(selectedBlock!.row), column: toColumn) {
             selectedBlock!.toColumn = toColumn
             selectedBlock!.fromColumn = Int(selectedBlock!.column)
-            selectedBlock!.isFalling = true
+            selectedBlock!.isSwapping = true
             
             toBlock.toColumn = selectedBlock!.fromColumn
             toBlock.fromColumn = Int(toBlock.column)
-            toBlock.isFalling = true
+            toBlock.isSwapping = true
             
             selectedBlock?.sprite?.glowWidth = 0
             selectedBlock = nil
+            level.isSwapping = true
             
         } else if (toColumn >= 1 && toColumn < level.numColumns - 1) {
             selectedBlock!.toColumn = toColumn
             selectedBlock!.fromColumn = Int(selectedBlock!.column)
-            selectedBlock!.isFalling = true
+            selectedBlock!.isSwapping = true
             
             selectedBlock?.sprite?.glowWidth = 0
             selectedBlock = nil
-        }
-        level.findHoles()
+            level.isSwapping = true
+        }        
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

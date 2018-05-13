@@ -52,6 +52,7 @@ class Block: CustomStringConvertible, Hashable {
     var sprite: SKShapeNode?
     var delete = false
     var isFalling = false
+    var isSwapping = false
     var toRow: Float?
     var fromColumn: Int
     var toColumn: Int?

@@ -18,7 +18,10 @@ class Level {
     
     var score = 0
     
-     var gameOverHandler: ((Set<Block>) -> Void)?
+    var gameOverHandler: ((Set<Block>) -> Void)?
+    
+    var isFalling = false
+    var isSwapping = false
     
     var acceleration:Float = 0.0000001
     var blockRiseSpeed:Float = 0.001
@@ -87,7 +90,8 @@ class Level {
     func updateBlockPositions() {
         deltaY += blockRiseSpeed
         blockRiseSpeed += acceleration
-        
+        var somethingFell = false
+        var somethingSwapped = false
         for bloc in set {
             if bloc.isFalling {
                 if let row = bloc.toRow {
@@ -96,8 +100,11 @@ class Level {
                         bloc.isFalling = false
                     } else {
                         bloc.row -= blockFallSpeed
+                        somethingFell = true
                     }
-                } else if let toColumn = bloc.toColumn {
+                }
+            } else if bloc.isSwapping {
+                if let toColumn = bloc.toColumn {
                     if bloc.fromColumn < toColumn {
                         if bloc.column >= Float(toColumn) {
                             bloc.column = Float(toColumn)
@@ -105,6 +112,7 @@ class Level {
                             bloc.isFalling = false
                         } else {
                             bloc.column += blockSwitchSpeed
+                            somethingSwapped = true
                         }
                     } else if bloc.fromColumn > toColumn {
                         if bloc.column <= Float(toColumn) {
@@ -113,11 +121,16 @@ class Level {
                             bloc.isFalling = false
                         } else {
                             bloc.column -= blockSwitchSpeed
+                            somethingSwapped = true
                         }
                     }
                 }
             }
         }
+        
+        self.isFalling = somethingFell
+        self.isSwapping = somethingSwapped
+        
         
         if(Float(bottomRow) + deltaY >= Float(0.0)){
             createNewBlockRow()
@@ -203,21 +216,24 @@ class Level {
     }
     
     func findHoles() {
-        for column in 1..<numColumns - 1 {
-            for row in (bottomRow ..< topRow) {
-                var holeRow = row
-                //1 - if hole at (column, row)
-                if block(atRow: row, column: column) == nil {
-                    
-                    //2 - search up the column for a block
-                    for lookup in (row + 1) ... topRow {
-                        if let bloc = block(atRow: lookup, column: column) {
-                            bloc.isFalling = true
-                            bloc.toRow = Float(holeRow)
-                            holeRow += 1
+        if !isSwapping {
+            for column in 1..<numColumns - 1 {
+                for row in (bottomRow ..< topRow) {
+                    var holeRow = row
+                    //1 - if hole at (column, row)
+                    if block(atRow: row, column: column) == nil {
+                        
+                        //2 - search up the column for a block
+                        for lookup in (row + 1) ... topRow {
+                            if let bloc = block(atRow: lookup, column: column) {
+                                bloc.isFalling = true
+                                bloc.toRow = Float(holeRow)
+                                holeRow += 1
+                                isFalling = true
+                            }
                         }
+                        break
                     }
-                    break
                 }
             }
         }
