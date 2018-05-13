@@ -242,7 +242,7 @@ class Level {
     }
     
     func findHoles() {
-        if !isSwapping && !isFalling {
+//        if !isSwapping && !isFalling {
             for column in 1..<numColumns - 1 {
                 for row in (bottomRow ..< topRow) {
                     var holeRow = row
@@ -262,7 +262,7 @@ class Level {
                     }
                 }
             }
-        }
+//        }
     }
     
 }
