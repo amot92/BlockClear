@@ -132,29 +132,31 @@ class GameScene: SKScene {
 //    }
     
     private func trySwap(horizontalDelta: Int) {
-        let toColumn = Int(selectedBlock!.column) + horizontalDelta
-        if let toBlock = level.block(atRow: Int(selectedBlock!.row), column: toColumn) {
-            selectedBlock!.toColumn = toColumn
-            selectedBlock!.fromColumn = Int(selectedBlock!.column)
-            selectedBlock!.isSwapping = true
-            
-            toBlock.toColumn = selectedBlock!.fromColumn
-            toBlock.fromColumn = Int(toBlock.column)
-            toBlock.isSwapping = true
-            
-            selectedBlock?.sprite?.glowWidth = 0
-            selectedBlock = nil
-            level.isSwapping = true
-            
-        } else if (toColumn >= 1 && toColumn < level.numColumns - 1) {
-            selectedBlock!.toColumn = toColumn
-            selectedBlock!.fromColumn = Int(selectedBlock!.column)
-            selectedBlock!.isSwapping = true
-            
-            selectedBlock?.sprite?.glowWidth = 0
-            selectedBlock = nil
-            level.isSwapping = true
-        }        
+        if !level.isSwapping && !level.isFalling {
+            let toColumn = Int(selectedBlock!.column) + horizontalDelta
+            if let toBlock = level.block(atRow: Int(selectedBlock!.row), column: toColumn) {
+                selectedBlock!.toColumn = toColumn
+                selectedBlock!.fromColumn = Int(selectedBlock!.column)
+                selectedBlock!.isSwapping = true
+                
+                toBlock.toColumn = selectedBlock!.fromColumn
+                toBlock.fromColumn = Int(toBlock.column)
+                toBlock.isSwapping = true
+                
+                selectedBlock?.sprite?.glowWidth = 0
+                selectedBlock = nil
+                level.isSwapping = true
+                
+            } else if (toColumn >= 1 && toColumn < level.numColumns - 1) {
+                selectedBlock!.toColumn = toColumn
+                selectedBlock!.fromColumn = Int(selectedBlock!.column)
+                selectedBlock!.isSwapping = true
+                
+                selectedBlock?.sprite?.glowWidth = 0
+                selectedBlock = nil
+                level.isSwapping = true
+            }
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
