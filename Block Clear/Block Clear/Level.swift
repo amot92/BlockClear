@@ -91,17 +91,22 @@ class Level {
     }
     
     func updateBlocks() {
-        //turn this into a handler
-        if let toDelete = findMatches() {
-            for bloc in toDelete {
-                bloc.sprite?.removeFromParent()
-            }
-        }
         
         if self.isSwapping { swapBlocks() }
         else if self.isFalling { dropBlocks() }
-        else { findHoles() }
+        else {
+            findHoles()
+            
+            if let toDelete = findMatches() {
+                for bloc in toDelete {
+                    bloc.sprite?.removeFromParent()
+                }
+            }
+        }
         raiseBlocks()
+        
+        //turn this into a handler
+        
     }
     
 //    deleteBlocks() {
