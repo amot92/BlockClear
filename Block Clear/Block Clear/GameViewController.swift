@@ -15,7 +15,10 @@ class GameViewController: UIViewController {
     var paused = false
     var scene: GameScene!
     var level: Level!
+    var speed:Float = 0.0
+
     
+    @IBOutlet weak var speedButton: UIButton!
     @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var pauseButton: UIButton!
     @IBOutlet weak var replayButton: UIButton!

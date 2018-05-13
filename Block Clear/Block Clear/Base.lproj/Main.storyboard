@@ -19,14 +19,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fij-cB-fkM" colorLabel="IBBuiltInLabel-Yellow">
-                                <rect key="frame" x="167" y="30" width="42" height="48"/>
+                                <rect key="frame" x="166" y="30" width="44" height="48"/>
                                 <color key="backgroundColor" red="0.86274509799999999" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="40"/>
                                 <nil key="highlightedColor"/>
                                 <size key="shadowOffset" width="1" height="1"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ujk-au-ZUf">
-                                <rect key="frame" x="303" y="36" width="42" height="36"/>
+                                <rect key="frame" x="301" y="36" width="44" height="36"/>
                                 <color key="backgroundColor" red="1" green="0.57637232540000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="Pause" backgroundImage="Tile.png"/>
                                 <connections>
@@ -44,6 +44,12 @@
                                     <action selector="replay:" destination="BV1-FR-VrT" eventType="touchUpInside" id="shA-Ke-4xZ"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Zl-IN-6tX" userLabel="Speed">
+                                <rect key="frame" x="29" y="36" width="46" height="30"/>
+                                <color key="backgroundColor" red="0.0" green="0.97680455450000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="italicSystem" pointSize="15"/>
+                                <state key="normal" title="Speed"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -51,7 +57,10 @@
                             <constraint firstItem="ujk-au-ZUf" firstAttribute="width" secondItem="fij-cB-fkM" secondAttribute="width" id="9cm-w3-4aR"/>
                             <constraint firstItem="fij-cB-fkM" firstAttribute="centerX" secondItem="4qk-I5-YsI" secondAttribute="centerX" id="CSI-1Z-RIp"/>
                             <constraint firstItem="ujk-au-ZUf" firstAttribute="centerY" secondItem="fij-cB-fkM" secondAttribute="centerY" id="PN6-Lp-gaQ"/>
+                            <constraint firstItem="0Zl-IN-6tX" firstAttribute="leading" secondItem="4qk-I5-YsI" secondAttribute="leading" constant="30" id="PtS-aw-Zvf"/>
+                            <constraint firstItem="0Zl-IN-6tX" firstAttribute="width" secondItem="fij-cB-fkM" secondAttribute="width" id="Ww7-Lr-fiV"/>
                             <constraint firstItem="fij-cB-fkM" firstAttribute="top" secondItem="4qk-I5-YsI" secondAttribute="top" constant="10" id="cOd-0A-CPy"/>
+                            <constraint firstItem="0Zl-IN-6tX" firstAttribute="centerY" secondItem="fij-cB-fkM" secondAttribute="centerY" id="h07-If-c4n"/>
                             <constraint firstItem="SEo-bo-iii" firstAttribute="centerX" secondItem="4qk-I5-YsI" secondAttribute="centerX" id="tcN-SG-pYm"/>
                             <constraint firstItem="4qk-I5-YsI" firstAttribute="trailing" secondItem="ujk-au-ZUf" secondAttribute="trailing" constant="30" id="vXo-Rs-fDj"/>
                         </constraints>
@@ -61,6 +70,7 @@
                         <outlet property="pauseButton" destination="ujk-au-ZUf" id="VXc-mT-urh"/>
                         <outlet property="replayButton" destination="SEo-bo-iii" id="HOP-Pi-meK"/>
                         <outlet property="scoreLabel" destination="fij-cB-fkM" id="gJg-6l-hjd"/>
+                        <outlet property="speedButton" destination="0Zl-IN-6tX" id="lpi-5s-geC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
