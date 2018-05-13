@@ -19,7 +19,6 @@ class GameScene: SKScene {
     let tileNode = SKSpriteNode(imageNamed: "Tile")
     var brickNode:SKShapeNode?
     
-    var swapHandler: ((Swap) -> Void)?
     var updateHandler: (() -> Void)?
     
     var selectedBlock: Block?
@@ -118,7 +117,7 @@ class GameScene: SKScene {
             if(block.sprite == nil){
                 self.addSprite(for: block, with: deltaY)
                 
-            } else if (level.isFalling && block.isFalling) || (level.isFalling) {
+            } else {
                 let realDest = self.pointFor(yPos: Float(block.row) + deltaY, xPos: block.column)
                 block.sprite?.run(SKAction.move(to: realDest!, duration: 0.0))
             }
@@ -126,11 +125,11 @@ class GameScene: SKScene {
         
     }
     
-    func removeSprites(for blocks: Set<Block>){
-        for block in blocks {
-            block.sprite?.removeFromParent()
-        }
-    }
+//    func removeSprites(for blocks: Set<Block>){
+//        for block in blocks {
+//            block.sprite?.removeFromParent()
+//        }
+//    }
     
     private func trySwap(horizontalDelta: Int) {
         let toColumn = Int(selectedBlock!.column) + horizontalDelta

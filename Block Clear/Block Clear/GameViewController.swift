@@ -15,9 +15,10 @@ class GameViewController: UIViewController {
     var paused = false
     var scene: GameScene!
     var level: Level!
-    var swap: Swap? = nil
     
     @IBOutlet weak var scoreLabel: UILabel!
+    @IBOutlet weak var pauseButton: UIButton!
+    @IBOutlet weak var replayButton: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,35 +32,32 @@ class GameViewController: UIViewController {
         scene.scaleMode = .aspectFill
         level = Level()
         scene.level = level
+        scene.updateHandler = handleUpdate
         level.gameOverHandler = gameOver
         
-        scene.swapHandler = setSwap
-        scene.updateHandler = handleUpdate
         paused = true
         skView.presentScene(scene)
     }
     
-    @IBOutlet weak var pauseButton: UIButton!
-    @IBAction func pauseButton(_ sender: Any) {
+    func beginGame() {
+        paused = false
+        replayButton.isHidden = true
+        replayButton.isEnabled = false
+        pauseButton.isEnabled = true
+        let newBlocks = level.createInitialBlocks()
+        scene.addInitialSprites(for: newBlocks)
+    }
+    
+    func handleUpdate() {
         if !paused {
-            paused = true
-            scene.blocksLayer.removeFromParent()
-            pauseButton.setTitle("Play", for: .normal)
-        } else {
-            paused = false
-            scene.addChild(scene.blocksLayer)
-            pauseButton.setTitle("Pause", for: .normal)
+            level.updateBlocks()
+            scene.updateSprites(for: level.blocks(), with: level.deltaY)
+            updateScore()
         }
     }
     
-    @IBOutlet weak var replayButton: UIButton!
-    @IBAction func replay(_ sender: Any) {
-        replayButton.setTitle("Play Again?", for: .normal)
-        scene.blocksLayer.removeAllChildren()
-        level.deltaY = 0.0
-        level.score = 0
-        level.numRows = level.numStartingRows
-        beginGame()
+    func updateScore() {
+        scoreLabel.text = "\(level.score)"
     }
     
     func gameOver(_ set: Set<Block>){
@@ -73,32 +71,25 @@ class GameViewController: UIViewController {
         level.set = Set<Block>()
     }
     
-    func setSwap(_ swap: Swap) {
-        self.swap = swap
-    }
-    
-    func handleUpdate() {
+    @IBAction func pauseButton(_ sender: Any) {
         if !paused {
-            DispatchQueue.main.async { self.raiseBlocks() }
-            deleteBlocks()
-            showScore()
+            paused = true
+            scene.blocksLayer.removeFromParent()
+            pauseButton.setTitle("Play", for: .normal)
+        } else {
+            paused = false
+            scene.addChild(scene.blocksLayer)
+            pauseButton.setTitle("Pause", for: .normal)
         }
     }
     
-    func showScore() {
-        scoreLabel.text = "\(level.score)"
-    }
-    
-    func raiseBlocks() {
-        level.updateBlockPositions()
-        scene.updateSprites(for: level.blocks(), with: level.deltaY)
-    }
-    
-    func deleteBlocks() {
-        if let toDelete = level.findMatches() {
-            scene.removeSprites(for: toDelete)
-            level.findHoles()
-        }
+    @IBAction func replay(_ sender: Any) {
+        replayButton.setTitle("Play Again?", for: .normal)
+        scene.blocksLayer.removeAllChildren()
+        level.deltaY = 0.0
+        level.score = 0
+        level.numRows = level.numStartingRows
+        beginGame()
     }
 
     override var prefersStatusBarHidden: Bool {
@@ -107,15 +98,6 @@ class GameViewController: UIViewController {
     
     override var shouldAutorotate: Bool {
         return true
-    }
-    
-    func beginGame() {
-        paused = false
-        replayButton.isHidden = true
-        replayButton.isEnabled = false
-        pauseButton.isEnabled = true
-        let newBlocks = level.createInitialBlocks()
-        scene.addInitialSprites(for: newBlocks)
     }
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {

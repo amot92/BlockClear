@@ -86,24 +86,35 @@ class Level {
         return set
     }
     
-    //should this be in controller?
-    func updateBlockPositions() {
+    func updateBlocks() {
+        if isSwapping {
+            swapBlocks()
+        } else if isFalling {
+            dropBlocks()
+        } else {
+            raiseBlocks()
+            if let toDelete = findMatches() {
+                for bloc in toDelete {
+                    bloc.sprite?.removeFromParent()
+                }
+            }
+            findHoles()
+        }
+    }
+    
+    func raiseBlocks() {
         deltaY += blockRiseSpeed
         blockRiseSpeed += acceleration
-        var somethingFell = false
+        
+        if(Float(bottomRow) + deltaY >= Float(0.0)){
+            createNewBlockRow()
+        }
+    }
+    
+    func swapBlocks() {
         var somethingSwapped = false
         for bloc in set {
-            if bloc.isFalling {
-                if let row = bloc.toRow {
-                    if bloc.row <= row {
-                        bloc.row = row
-                        bloc.isFalling = false
-                    } else {
-                        bloc.row -= blockFallSpeed
-                        somethingFell = true
-                    }
-                }
-            } else if bloc.isSwapping {
+            if bloc.isSwapping {
                 if let toColumn = bloc.toColumn {
                     if bloc.fromColumn < toColumn {
                         if bloc.column >= Float(toColumn) {
@@ -127,14 +138,25 @@ class Level {
                 }
             }
         }
-        
-        self.isFalling = somethingFell
         self.isSwapping = somethingSwapped
-        
-        
-        if(Float(bottomRow) + deltaY >= Float(0.0)){
-            createNewBlockRow()
+    }
+    
+    func dropBlocks() {
+        var somethingFell = false
+        for bloc in set {
+            if bloc.isFalling {
+                if let row = bloc.toRow {
+                    if bloc.row <= row {
+                        bloc.row = row
+                        bloc.isFalling = false
+                    } else {
+                        bloc.row -= blockFallSpeed
+                        somethingFell = true
+                    }
+                }
+            }
         }
+        self.isFalling = somethingFell
     }
     
     func createNewBlockRow(){
