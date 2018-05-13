@@ -13,8 +13,13 @@ class Level {
     let numColumns = 9
     let numStartingRows = 9
     
+    var blockRiseSpeed:Float = 0.001
+    let blockFallSpeed:Float = 0.15
+    let blockSwitchSpeed:Float = 0.1
+    
     var numRows = 9
     var deltaY:Float = 0.0
+    var cieling: Float = 0.0
     
     var score = 0
     
@@ -23,14 +28,7 @@ class Level {
     var isFalling = false
     var isSwapping = false
     
-//    var acceleration:Float = 0.0000001
-    var blockRiseSpeed:Float = 0.001
-    let blockFallSpeed:Float = 0.1
-    let blockSwitchSpeed:Float = 0.1
-    
     var set: Set<Block> = []
-    
-    var cieling: Float = 0.0
     
     var addedVelocity: Float {
         return Float(score) * 0.00001
@@ -91,12 +89,12 @@ class Level {
     }
     
     func updateBlocks() {
-        
         if self.isSwapping { swapBlocks() }
         else if self.isFalling { dropBlocks() }
         else {
             findHoles()
             
+            //turn this into a handler?
             if let toDelete = findMatches() {
                 for bloc in toDelete {
                     bloc.sprite?.removeFromParent()
@@ -104,14 +102,7 @@ class Level {
             }
         }
         raiseBlocks()
-        
-        //turn this into a handler
-        
     }
-    
-//    deleteBlocks() {
-//
-//    }
     
     func raiseBlocks() {
         deltaY += (blockRiseSpeed + addedVelocity)
@@ -122,7 +113,6 @@ class Level {
     }
     
     func swapBlocks() {
-        raiseBlocks()
         var somethingSwapped = false
         for bloc in set {
             if bloc.isSwapping {
@@ -206,7 +196,6 @@ class Level {
         return blockType
     }
     
-    //deletes all matched blocks from the model
     func findMatches() -> Set<Block>? {
         for bloc in set {
             
@@ -218,32 +207,23 @@ class Level {
                 
                 //horizontal chain
                 if let lastBlockInRow = block(atRow: Int(bloc.row), column: Int(bloc.column) - 1),
-                 let blockBeforeLastInRow = block(atRow: Int(bloc.row), column: Int(bloc.column) - 2){
-                    if lastBlockInRow.blockType == bloc.blockType && blockBeforeLastInRow.blockType == bloc.blockType {
-                        if !lastBlockInRow.isFalling && !blockBeforeLastInRow.isFalling && !bloc.isFalling && !lastBlockInRow.isSwapping && !blockBeforeLastInRow.isSwapping && !bloc.isSwapping {
+                 let blockBeforeLastInRow = block(atRow: Int(bloc.row), column: Int(bloc.column) - 2),
+                     lastBlockInRow.blockType == bloc.blockType && blockBeforeLastInRow.blockType == bloc.blockType && !lastBlockInRow.isFalling && !blockBeforeLastInRow.isFalling && !bloc.isFalling && !lastBlockInRow.isSwapping && !blockBeforeLastInRow.isSwapping && !bloc.isSwapping {
                         
                             lastBlockInRow.delete = true
                             blockBeforeLastInRow.delete = true
                             bloc.delete = true
-                            
-                        }
-                    }
                 }
 
                 //vertical chain
                 if let lastBlockInColumn = block(atRow: Int(bloc.row) + 1, column: Int(bloc.column)),
-                 let blockBeforelastInColumn = block(atRow: Int(bloc.row) + 2, column: Int(bloc.column)) {
-                    if lastBlockInColumn.blockType == bloc.blockType && blockBeforelastInColumn.blockType == bloc.blockType {
-                        if !lastBlockInColumn.isFalling && !blockBeforelastInColumn.isFalling && !bloc.isFalling && !lastBlockInColumn.isSwapping && !blockBeforelastInColumn.isSwapping && !bloc.isSwapping {
+                 let blockBeforelastInColumn = block(atRow: Int(bloc.row) + 2, column: Int(bloc.column)),
+                  lastBlockInColumn.blockType == bloc.blockType && blockBeforelastInColumn.blockType == bloc.blockType && !lastBlockInColumn.isFalling && !blockBeforelastInColumn.isFalling && !bloc.isFalling && !lastBlockInColumn.isSwapping && !blockBeforelastInColumn.isSwapping && !bloc.isSwapping {
                             
                             lastBlockInColumn.delete = true
                             blockBeforelastInColumn.delete = true
                             bloc.delete = true
-                            
-                        }
-                    }
                 }
-                
             }
         }
         let toDelete = set.filter { $0.delete }
@@ -265,9 +245,11 @@ class Level {
                     for lookup in (row + 1) ... topRow {
                         if let bloc = block(atRow: lookup, column: column) {
                             bloc.isFalling = true
+                            self.isFalling = true
                             bloc.toRow = Float(holeRow)
+                            
+                            //next block up needs to end up one row up
                             holeRow += 1
-                            isFalling = true
                         }
                     }
                     break
