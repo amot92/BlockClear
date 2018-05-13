@@ -124,7 +124,7 @@ class Level {
                         if bloc.column >= Float(toColumn) {
                             bloc.column = Float(toColumn)
                             bloc.fromColumn = toColumn
-                            bloc.isFalling = false
+                            bloc.isSwapping = false
                         } else {
                             bloc.column += blockSwitchSpeed
                             somethingSwapped = true
@@ -133,7 +133,7 @@ class Level {
                         if bloc.column <= Float(toColumn) {
                             bloc.column = Float(toColumn)
                             bloc.fromColumn = toColumn
-                            bloc.isFalling = false
+                            bloc.isSwapping = false
                         } else {
                             bloc.column -= blockSwitchSpeed
                             somethingSwapped = true
