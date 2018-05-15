@@ -12,6 +12,7 @@ import GameplayKit
 // The scene draws the block sprites, and handles swipes.
 class GameScene: SKScene {
     var level: Level!
+
     let blocksLayer = SKNode()
     
     var spriteSize: CGSize?
@@ -24,8 +25,8 @@ class GameScene: SKScene {
     var selectedBlock: Block?
     
     var swapping = false
-    
     var falling = false
+    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder) is not used in this app")
@@ -35,25 +36,20 @@ class GameScene: SKScene {
         super.init(size: size)
         self.name = "scene"
         blocksLayer.name = "blocksLayer"
-        
-        let background = SKSpriteNode(imageNamed: "BlockBackground")
-        background.size = size
-        background.position = CGPoint(x: size.width/2, y: size.height/2)
-        addChild(background)
     }
     
     
     override func didMove(to view: SKView) {
-        backgroundColor = SKColor.black
-        let blockSize = size.width / CGFloat(level.columns())
+        backgroundColor = SKColor.clear
+
+        let position = CGPoint(x: size.width/2, y: size.height/2)
+        let background = SKSpriteNode(imageNamed: "Tile")
+        background.position = position
+        background.size = size
+        addChild(background)
         
-        let playSize = CGSize(width: blockSize * CGFloat(level.columns() - 2), height: size.height * 0.9)
-        let position = CGPoint(x: size.width/2, y: playSize.height/2)
-       
-        tileNode.size = playSize
-        tileNode.position = position
-        addChild(tileNode)
-        level.cieling = Float(tileNode.size.height / blockSize)
+        let blockSize = size.width / CGFloat(level.columns())
+        level.cieling = Float(size.height / blockSize)
         
         spriteSize = CGSize(width: blockSize, height: blockSize)
         brickNode = SKShapeNode.init(rectOf: CGSize.init(width: blockSize, height: blockSize), cornerRadius: blockSize * 0.3)
@@ -81,8 +77,7 @@ class GameScene: SKScene {
     
     //convert screen coordinates to column/row coordinates
     private func convertPoint(_ point: CGPoint) -> (success: Bool, column: Int, yPos: Float) {
-        if point.x >= (spriteSize?.width)! && point.x < CGFloat(level.numColumns - 1) * (spriteSize?.width)! &&
-            point.y >= 0 && point.y < CGFloat(level.numRows) * (spriteSize?.height)! {
+        if point.y >= 0 && point.y < CGFloat(level.numRows) * (spriteSize?.height)! {
             return (true, Int(point.x / (spriteSize?.width)!), Float(point.y / (spriteSize?.height)!))
         } else {
             return (false, 0, 0)  // invalid location
@@ -125,12 +120,6 @@ class GameScene: SKScene {
         
     }
     
-//    func removeSprites(for blocks: Set<Block>){
-//        for block in blocks {
-//            block.sprite?.removeFromParent()
-//        }
-//    }
-    
     private func trySwap(horizontalDelta: Int) {
         if !level.isSwapping && !level.isFalling {
             let toColumn = Int(selectedBlock!.column) + horizontalDelta
@@ -147,7 +136,7 @@ class GameScene: SKScene {
                 selectedBlock = nil
                 level.isSwapping = true
                 
-            } else if (toColumn >= 1 && toColumn < level.numColumns - 1) {
+            } else if (toColumn < level.numColumns) {
                 selectedBlock!.toColumn = toColumn
                 selectedBlock!.fromColumn = Int(selectedBlock!.column)
                 selectedBlock!.isSwapping = true

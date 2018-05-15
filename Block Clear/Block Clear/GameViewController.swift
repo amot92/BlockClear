@@ -13,11 +13,13 @@ import AVFoundation
 class GameViewController: UIViewController {
     
     var paused = false
-    var scene: GameScene!
+    var gameScene: GameScene!
+    var backgroundScene: BackgroundScene!
     var level: Level!
     var speed:Float = 0.0
 
     
+    @IBOutlet weak var blocksView: SKView!
     @IBOutlet weak var speedButton: UIButton!
     @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var pauseButton: UIButton!
@@ -31,15 +33,17 @@ class GameViewController: UIViewController {
         let skView = view as! SKView
         skView.isMultipleTouchEnabled = true
         
-        scene = GameScene(size: skView.bounds.size)
-        scene.scaleMode = .aspectFill
+        gameScene = GameScene(size: blocksView.bounds.size)
+        backgroundScene = BackgroundScene(size: skView.bounds.size)
+        gameScene.scaleMode = .aspectFill
         level = Level()
-        scene.level = level
-        scene.updateHandler = handleUpdate
+        gameScene.level = level
+        gameScene.updateHandler = handleUpdate
         level.gameOverHandler = gameOver
         
         paused = true
-        skView.presentScene(scene)
+        skView.presentScene(backgroundScene)
+        blocksView.presentScene(gameScene)
         
         speedButton.addTarget(self, action: #selector(speedUp), for: .touchDown)
         speedButton.addTarget(self, action: #selector(slowDown), for: .touchUpInside)
@@ -61,13 +65,13 @@ class GameViewController: UIViewController {
         replayButton.isEnabled = false
         pauseButton.isEnabled = true
         let newBlocks = level.createInitialBlocks()
-        scene.addInitialSprites(for: newBlocks)
+        gameScene.addInitialSprites(for: newBlocks)
     }
     
     func handleUpdate() {
         if !paused {
             level.updateBlocks()
-            scene.updateSprites(for: level.blocks(), with: level.deltaY)
+            gameScene.updateSprites(for: level.blocks(), with: level.deltaY)
             updateScore()
         }
     }
@@ -90,18 +94,18 @@ class GameViewController: UIViewController {
     @IBAction func pauseButton(_ sender: Any) {
         if !paused {
             paused = true
-            scene.blocksLayer.removeFromParent()
+            gameScene.blocksLayer.removeFromParent()
             pauseButton.setTitle("Play", for: .normal)
         } else {
             paused = false
-            scene.addChild(scene.blocksLayer)
+            gameScene.addChild(gameScene.blocksLayer)
             pauseButton.setTitle("Pause", for: .normal)
         }
     }
     
     @IBAction func replay(_ sender: Any) {
         replayButton.setTitle("Play Again?", for: .normal)
-        scene.blocksLayer.removeAllChildren()
+        gameScene.blocksLayer.removeAllChildren()
         level.deltaY = 0.0
         level.score = 0
         level.numRows = level.numStartingRows

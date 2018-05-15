@@ -10,14 +10,14 @@ import Foundation
 import SpriteKit
 
 class Level {
-    let numColumns = 9
-    let numStartingRows = 9
+    let numColumns = 7
+    let numStartingRows = 7
     
     var blockRiseSpeed:Float = 0.001
     let blockFallSpeed:Float = 0.15
     let blockSwitchSpeed:Float = 0.1
     
-    var numRows = 9
+    var numRows = 7
     var deltaY:Float = 0.0
     var cieling: Float = 0.0
     
@@ -79,13 +79,22 @@ class Level {
 
     func createInitialBlocks() -> Set<Block> {
         for row in -1..<numStartingRows - 1 {
-            for column in 1..<numColumns - 1 {
+            for column in 0..<numColumns {
                 let blockType = getBlockType(column: column, row: row)
                 let newBlock = Block(column: Float(column), row: Float(row), blockType: blockType)
                 set.insert(newBlock)
             }
         }
         return set
+    }
+    
+    func createNewBlockRow(){
+        for column in 0...numColumns - 1 {
+            let blockType = getBlockType(column: column, row: bottomRow - 1)
+            let newBlock = Block(column: Float(column), row: Float(bottomRow - 1), blockType: blockType)
+            set.insert(newBlock)
+        }
+        numRows += 1
     }
     
     
@@ -162,14 +171,14 @@ class Level {
         self.isFalling = somethingFell
     }
     
-    func createNewBlockRow(){
-        for column in 1...numColumns - 2 {
-            let blockType = getBlockType(column: column, row: bottomRow - 1)
-            let newBlock = Block(column: Float(column), row: Float(bottomRow - 1), blockType: blockType)
-            set.insert(newBlock)
-        }
-        numRows += 1
-    }
+//    func createNewBlockRow(){
+//        for column in 0...numColumns - 1 {
+//            let blockType = getBlockType(column: column, row: bottomRow - 1)
+//            let newBlock = Block(column: Float(column), row: Float(bottomRow - 1), blockType: blockType)
+//            set.insert(newBlock)
+//        }
+//        numRows += 1
+//    }
     
     func getBlockType(column: Int, row: Int) -> BlockType {
         var blockType = BlockType.random()
@@ -237,7 +246,7 @@ class Level {
     }
     
     func findHoles() {
-        for column in 1..<numColumns - 1 {
+        for column in 0..<numColumns {
             for row in (bottomRow ..< topRow) {
                 var holeRow = row
                 //1 - if hole at (column, row)

@@ -33,8 +33,18 @@
                                     <action selector="pauseButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="0Dr-kG-F0H"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Zl-IN-6tX" userLabel="Speed">
+                                <rect key="frame" x="29" y="36" width="46" height="30"/>
+                                <color key="backgroundColor" red="0.0" green="0.97680455450000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="italicSystem" pointSize="15"/>
+                                <state key="normal" title="Speed"/>
+                            </button>
+                            <skView contentMode="scaleToFill" misplaced="YES" allowsTransparency="YES" preferredFramesPerSecond="100" translatesAutoresizingMaskIntoConstraints="NO" id="gD6-3L-eIe" userLabel="BlocksView">
+                                <rect key="frame" x="50" y="108" width="275" height="559"/>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </skView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SEo-bo-iii">
-                                <rect key="frame" x="136" y="307.5" width="102" height="72"/>
+                                <rect key="frame" x="136" y="307" width="102" height="72"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="50"/>
                                 <state key="normal" title="Start">
@@ -44,29 +54,28 @@
                                     <action selector="replay:" destination="BV1-FR-VrT" eventType="touchUpInside" id="shA-Ke-4xZ"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Zl-IN-6tX" userLabel="Speed">
-                                <rect key="frame" x="29" y="36" width="46" height="30"/>
-                                <color key="backgroundColor" red="0.0" green="0.97680455450000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="italicSystem" pointSize="15"/>
-                                <state key="normal" title="Speed"/>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="SEo-bo-iii" firstAttribute="centerY" secondItem="4qk-I5-YsI" secondAttribute="centerY" id="5xm-JE-AJi"/>
+                            <constraint firstItem="gD6-3L-eIe" firstAttribute="top" secondItem="fij-cB-fkM" secondAttribute="bottom" constant="50" id="6Qg-iT-4Sc"/>
                             <constraint firstItem="ujk-au-ZUf" firstAttribute="width" secondItem="fij-cB-fkM" secondAttribute="width" id="9cm-w3-4aR"/>
                             <constraint firstItem="fij-cB-fkM" firstAttribute="centerX" secondItem="4qk-I5-YsI" secondAttribute="centerX" id="CSI-1Z-RIp"/>
                             <constraint firstItem="ujk-au-ZUf" firstAttribute="centerY" secondItem="fij-cB-fkM" secondAttribute="centerY" id="PN6-Lp-gaQ"/>
                             <constraint firstItem="0Zl-IN-6tX" firstAttribute="leading" secondItem="4qk-I5-YsI" secondAttribute="leading" constant="30" id="PtS-aw-Zvf"/>
                             <constraint firstItem="0Zl-IN-6tX" firstAttribute="width" secondItem="fij-cB-fkM" secondAttribute="width" id="Ww7-Lr-fiV"/>
                             <constraint firstItem="fij-cB-fkM" firstAttribute="top" secondItem="4qk-I5-YsI" secondAttribute="top" constant="10" id="cOd-0A-CPy"/>
+                            <constraint firstItem="gD6-3L-eIe" firstAttribute="leading" secondItem="4qk-I5-YsI" secondAttribute="leading" constant="50" id="dsd-9S-cIh"/>
                             <constraint firstItem="0Zl-IN-6tX" firstAttribute="centerY" secondItem="fij-cB-fkM" secondAttribute="centerY" id="h07-If-c4n"/>
+                            <constraint firstItem="gD6-3L-eIe" firstAttribute="bottom" secondItem="4qk-I5-YsI" secondAttribute="bottom" id="oPf-zx-8bn"/>
                             <constraint firstItem="SEo-bo-iii" firstAttribute="centerX" secondItem="4qk-I5-YsI" secondAttribute="centerX" id="tcN-SG-pYm"/>
                             <constraint firstItem="4qk-I5-YsI" firstAttribute="trailing" secondItem="ujk-au-ZUf" secondAttribute="trailing" constant="30" id="vXo-Rs-fDj"/>
+                            <constraint firstItem="4qk-I5-YsI" firstAttribute="trailing" secondItem="gD6-3L-eIe" secondAttribute="trailing" constant="50" id="zwq-c0-ftQ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="4qk-I5-YsI"/>
                     </view>
                     <connections>
+                        <outlet property="blocksView" destination="gD6-3L-eIe" id="MP0-7n-szH"/>
                         <outlet property="pauseButton" destination="ujk-au-ZUf" id="VXc-mT-urh"/>
                         <outlet property="replayButton" destination="SEo-bo-iii" id="HOP-Pi-meK"/>
                         <outlet property="scoreLabel" destination="fij-cB-fkM" id="gJg-6l-hjd"/>
