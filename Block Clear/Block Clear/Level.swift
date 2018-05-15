@@ -88,6 +88,8 @@ class Level {
         return set
     }
     
+    
+    //do this in controller?
     func updateBlocks() {
         if self.isSwapping { swapBlocks() }
         else if self.isFalling { dropBlocks() }
